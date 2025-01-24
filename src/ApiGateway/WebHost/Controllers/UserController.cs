@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebHost.Controllers;
 
@@ -13,10 +14,23 @@ public class UserController : ControllerBase
         _client = client;
     }
 
+    /// <summary>
+    /// Получение юзера по ID
+    /// </summary>
     [HttpGet("{id}")]
-    public async Task<GetUserResponse> GetAsync(string id)
+    //[Authorize]
+    public async Task<GetUserResponse> GetUserAsync(string id)
     {
         var request = new GetUserByIdRequest { Id = id };
         return await _client.GetUserByIdAsync(request);
+    }
+
+    /// <summary>
+    /// Создание нового юзера
+    /// </summary>
+    [HttpPost("create")]
+    public async Task<CreateUserResponse> CreateUserAsync(CreateUserRequest request)
+    {
+        return await _client.CreateUserAsync(request);
     }
 }
